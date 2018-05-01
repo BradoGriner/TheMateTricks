@@ -1,41 +1,41 @@
 import { Injectable } from '@angular/core';
+import { AuthUser } from '../Models/auth-user';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
-import { AuthUser } from '../models/authuser';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { User } from '../models/user';
+import { environment } from '../../environments/environment';
 
 @Injectable()
+
 export class AuthService {
-  baseUrl = 'https://webappslab6kevinmitchell.azurewebsites.net/api/auth/';
 
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
-
-  //The map method was not properly assigning 
+  baseUrl = environment.apiUrl; 
+  constructor(private http: HttpClient, private JwtHelperService: JwtHelperService) { }
+  
   login(user) {
-    return this.http.post(this.baseUrl + 'login', user)
-      .map((result: any) => {
+    return this.http.post<AuthUser>(this.baseUrl + '/auth/login', user)
+      .map((result: AuthUser) => {
         if (result) {
-          var buildUser: User = { id: result.id, userName: result.userName };
-          var auth: AuthUser = { tokenString: result.tokenString, user: buildUser };
-          localStorage.setItem('token', auth.tokenString);
-          localStorage.setItem('user', JSON.stringify(auth.user));
+          localStorage.setItem('token', result.tokenString);
+          localStorage.setItem('user', JSON.stringify(result.user));
+          console.log('token');
         }
         return result;
       });
   }
 
-  isExpired() {
-    return this.jwtHelper.isTokenExpired();
+  Register(model) {
+    return this.http.post<AuthUser>(this.baseUrl + '/auth/register', model);
   }
 
-  logOut() {
+  IsExpired() {
+    return this.JwtHelperService.isTokenExpired(); 
+  }
+
+  LogOut() {
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
-  }
+    localStorage.removeItem('User');
+    console.log("Logout Successful");
 
-  register(model) {
-    const contentHeader = new HttpHeaders({ 'Content-type': 'application/json' });
-    return this.http.post(this.baseUrl + 'register', model, { headers: contentHeader });
   }
 }

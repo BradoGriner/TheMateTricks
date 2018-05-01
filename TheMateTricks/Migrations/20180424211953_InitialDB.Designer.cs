@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 using TheMateTricks.Data;
+using TheMateTricks.Data.MateTricks.Data;
 
 namespace TheMateTricks.Migrations
 {

@@ -1,16 +1,15 @@
-<form #loginForm="ngForm" (ngSubmit)="register()" class="form-signin mt-5">
-  <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
-  <label for="username" class="sr-only">UserName</label>
-  <input type="text" id="username" class="form-control mt-3" placeholder="UserName" name="username" [(ngModel)]="model.username" required>
-  <label for="inputPassword" class="sr-only">Password</label>
-  <input type="password" id="inputPassword" class="form-control mt-3" placeholder="Password" name="password" [(ngModel)]="model.password" required>
-  <label for="inputPasswordCon" class="sr-only">Confirm Password</label>
-  <input type="password" id="inputPasswordCon" class="form-control mt-3 mb-3" placeholder="Confirm Password" name="passwordCon" [(ngModel)]="passwordCon.password">
-  <alert *ngIf="!checkPassword()" [type]="passwordConAlert.type" [dismissOnTimeout]="passwordConAlert.timeout">{{ passwordConAlert.msg }}</alert>
-  <alert *ngFor="let error of errors" [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ error }}</alert>
-  <div class="text-center mt-3 mb-3">
-    <button class="btn btn btn-primary" type="submit">Register</button>
-    <button routerLink="/home" class="btn btn-default">Cancel</button>
-  </div>
-  <alert *ngIf="success" type="success">Thanks for signing up!</alert>
-</form>
+
+<body class="text-center">
+
+  <form #RegisterForm="ngForm" class="form-control" (ngSubmit)="register()">
+    <h2 class="h3 mb-3 font-weight-normal">Sign Up</h2>
+        <input name ="userName"class="form-control mr-sm-2" type="text" placeholder="UserName" [(ngModel)]="model.userName" required/>
+        <input name="password" class="form-control mr-sm-2" type="password" placeholder="Password" [(ngModel)]="model.password" required/>
+        <input name="passwordConfirm" class="form-control mr-sm-2" type="password" placeholder="Confirm Password" [(ngModel)]="PasswordConfirmation.passwordConfirm" required/>
+    <alert *ngIf="!PassVerify()" class="alert alert-danger">Passwords Do not Match!</alert>
+    <button class="btn btn-primary btn-block" type="submit" [disabled]="!RegisterForm.valid">Register</button>
+    <button class="btn btn-danger btn-block" routerLink="/Home">Cancel</button>
+    <alert *ngIf="AccountCreation()"class="alert alert-success" [dismissOnTimeout]="5000">You Have successfully registered with the Matrix!</alert>
+    <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+  </form>
+</body>

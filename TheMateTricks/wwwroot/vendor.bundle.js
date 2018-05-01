@@ -6676,7 +6676,7 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["_9" /* Version */
 /* unused harmony export HttpBackend */
 /* unused harmony export HttpHandler */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return HttpClient; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return HttpHeaders; });
+/* unused harmony export HttpHeaders */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HTTP_INTERCEPTORS; });
 /* unused harmony export JsonpClientBackend */
 /* unused harmony export JsonpInterceptor */

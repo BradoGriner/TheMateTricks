@@ -14,6 +14,7 @@ namespace TheMateTricks.Models
         public string UserName { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+
         public string Gender { get; set; }
         public DateTime BirthDate { get; set; }
         public string Name { get; set; }
@@ -23,10 +24,7 @@ namespace TheMateTricks.Models
         public string LookingFor { get; set; }
         public string Interests { get; set; }
         public string City { get; set; }
-
-
-        private ICollection<Photo> Photos { get; set; }
-
+        public ICollection<Photo> Photos { get; set; }
         public User()
         {
             Photos = new Collection<Photo>();

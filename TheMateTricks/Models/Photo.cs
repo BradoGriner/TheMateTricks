@@ -2,7 +2,7 @@
 
 namespace TheMateTricks.Models
 {
-    internal class Photo
+    public class Photo
     {
         public int ID { get; set; }
         public string Url { get; set; }

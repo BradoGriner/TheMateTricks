@@ -2,125 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TheMateTricks.Data;
+using Microsoft.Extensions.Configuration;
+using System.Collections;
 using TheMateTricks.Models;
+using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
+using TheMateTricks.DTOs;
 
 namespace TheMateTricks.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/Users")]
+    [Route("api/[controller]")]
     public class UsersController : Controller
     {
-        private readonly DataContext _context;
-
-        public UsersController(DataContext context)
+        private readonly IUserRepository _repo;
+        private readonly IMapper _mapper;
+        public UsersController(IUserRepository repo, IMapper mapper)
         {
-            _context = context;
+            _repo = repo;
+            _mapper = mapper;
         }
-
-        // GET: api/Users
-        [HttpGet]
-        public IEnumerable<User> GetUsers()
+        [HttpGet("user")]
+        [Authorize]
+        public async Task<UserDetailedDTO> GetUser(int id)
         {
-            return _context.Users;
+            var User = await _repo.GetUser(id);
+            var userDetails = _mapper.Map<UserDetailedDTO>(User);
+            return userDetails;
         }
-
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser([FromRoute] int id)
+        [HttpGet("Users")]
+        [Authorize]
+        public async Task<IEnumerable<UserBriefDTO>> GetUsers()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = await _context.Users.SingleOrDefaultAsync(m => m.ID == id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(user);
-        }
-        // More work to do again!
-        // PUT: api/Users/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser([FromRoute] int id, [FromBody] User user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != user.ID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Users
-        [HttpPost]
-        public async Task<IActionResult> PostUser([FromBody] User user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.ID }, user);
-        }
-
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = await _context.Users.SingleOrDefaultAsync(m => m.ID == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return Ok(user);
-        }
-
-        private bool UserExists(int id)
-        {
-            return _context.Users.Any(e => e.ID == id);
+            var Users = await _repo.GetUsers();
+            var userBriefDetails = _mapper.Map<IEnumerable<UserBriefDTO>>(Users);
+            return userBriefDetails;
         }
     }
 }

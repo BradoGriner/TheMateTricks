@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using TheMateTricks.Models;
 using Microsoft.EntityFrameworkCore;
+using TheMateTricks.Data.MateTricks.Data;
 
 namespace TheMateTricks.Data
 {
