@@ -13,5 +13,6 @@ namespace TheMateTricks.Data
         Task<bool> SaveAll();
         Task<IEnumerable<User>> GetUsers();
         Task<User> GetUser(int id);
+        
     }
 }

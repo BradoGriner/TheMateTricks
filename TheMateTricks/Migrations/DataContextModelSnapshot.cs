@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 using TheMateTricks.Data;
-using TheMateTricks.Data.MateTricks.Data;
 
 namespace TheMateTricks.Migrations
 {
@@ -40,7 +39,7 @@ namespace TheMateTricks.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Photo");
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("TheMateTricks.Models.User", b =>
@@ -81,7 +80,7 @@ namespace TheMateTricks.Migrations
             modelBuilder.Entity("TheMateTricks.Models.Photo", b =>
                 {
                     b.HasOne("TheMateTricks.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Photos")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

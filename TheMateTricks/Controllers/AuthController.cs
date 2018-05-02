@@ -7,11 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using TheMateTricks.Data;
 using TheMateTricks.DTOs;
+using TheMateTricks.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-
+using AutoMapper;
 namespace TheMateTricks.Controllers
 {
     [Produces("application/json")]
@@ -20,11 +21,13 @@ namespace TheMateTricks.Controllers
     {
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
+        private readonly IMapper _mapper;
 
-        public AuthController(IAuthRepository repo, IConfiguration config)
+        public AuthController(IAuthRepository repo, IConfiguration config,IMapper mapper)
         {
             _repo = repo;
             _config = config;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -35,19 +38,20 @@ namespace TheMateTricks.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
-            user.UserName = user.UserName.ToLower();
 
-            
-            if (_repo.ValidateUserName(user.UserName))
+
+
+            var use = Mapper.Map<User>(user);
+            if (_repo.ValidateUserName(use.UserName))
             {
                 ModelState.AddModelError("UserName", "User name already exists");
                 return BadRequest(ModelState);
             }
-
-            var newUser = await _repo.Register(user.UserName, user.Password);
             
-            return StatusCode(201, new { ID = newUser.ID, UserName = newUser.UserName });
+            var detailedUser = Mapper.Map<UserDetailedDTO>(use);
+            var newUser = await _repo.Register(user);
+            
+            return Created("api/Auth/Register", detailedUser);
         }
 
         [HttpPost("login")]

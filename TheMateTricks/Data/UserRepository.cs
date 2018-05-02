@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using TheMateTricks.Data;
 using TheMateTricks.Models;
 using Microsoft.EntityFrameworkCore;
-using TheMateTricks.Data.MateTricks.Data;
 
-namespace TheMateTricks
+namespace TheMateTricks.Data
 {
     public class UserRepository : IUserRepository
     {

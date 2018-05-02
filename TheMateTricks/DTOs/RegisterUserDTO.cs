@@ -14,5 +14,9 @@ namespace TheMateTricks.DTOs
 
         [MinLength(6, ErrorMessage = "{0} must be at least {1} characters long")]
         public string Password { get; set; }
+        public string Gender { get; set; }
+        public string name { get; set; }
+        public string birthdate { get; set; }
+        public string city { get; set; }
     }
 }

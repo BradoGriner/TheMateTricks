@@ -4,17 +4,20 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using TheMateTricks.Models;
 using Microsoft.EntityFrameworkCore;
-using TheMateTricks.Data.MateTricks.Data;
+using AutoMapper;
+using TheMateTricks.DTOs;
 
 namespace TheMateTricks.Data
 {
     public class AuthRepository : IAuthRepository
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public AuthRepository(DataContext context)
+        public AuthRepository(DataContext context,IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public async Task<User> Login(string userName, string password)
         {
@@ -40,19 +43,19 @@ namespace TheMateTricks.Data
             return computedHash.SequenceEqual(passwordHash);
         }
 
-        public async Task<User> Register(string userName, string password)
+        public async Task<User> Register(RegisterUserDTO user)
         {
             // Hash the password using SHA512 with random key (salt)
             var hash = new HMACSHA512();
-            var computedHash = hash.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            var computedHash = hash.ComputeHash(System.Text.Encoding.UTF8.GetBytes(user.Password));
 
-            var newUser = new User { UserName = userName };
-            newUser.PasswordHash = computedHash;
-            newUser.PasswordSalt = hash.Key;
+            var use = Mapper.Map<User>(user);
+            use.PasswordHash = computedHash;
+            use.PasswordSalt = hash.Key;
 
-            await _context.Users.AddAsync(newUser);
+            await _context.Users.AddAsync(use);
             await _context.SaveChangesAsync();
-            return newUser;
+            return use;
         }
 
         public bool ValidateUserName(string userName)

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserServiceService } from '../../Services/user-service.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-member-list',
@@ -8,18 +8,14 @@ import { UserServiceService } from '../../Services/user-service.service';
 })
 export class MemberListComponent implements OnInit {
 
-  constructor(private UserServiceService: UserServiceService) { }
-
+  constructor(private UserService: UserService) { }
   users = [];
-
   ngOnInit() {
-
-    this.getusers();
-
+    this.getUsers();
   }
-
-  getusers() {
-    this.UserServiceService.RetrieveUsers().subscribe(p => this.users = p, err => console.log(err), () => console.log(this.users));
+  getUsers(){
+    this.UserService.RetrieveUsers().subscribe(p => this.users = p, err => console.log(err), () => console.log(this.users));
     console.log(this.users);
   }
+
 }

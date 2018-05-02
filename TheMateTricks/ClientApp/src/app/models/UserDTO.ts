@@ -1,19 +1,17 @@
-import { PhotosDto } from "./PhotosDto";
+import { PhotosDto } from "./PhotosDTO";
 
-export interface UserDTO
-{
-  id: number;
-  userName: string;
-  gender: string;
-  age: number;
-  name: string;
-  created: Date;
-  lastActive: Date;
-  city: string;
-  photoUrl: string;
-  introduction?: string;
-  lookingFor?: string;
-  interests?: string;
-  photos?: Array<PhotosDto>;
-    }
-
+export interface UserDTO {
+    id: number;
+    userName: string;
+    gender: string;
+    age: number;
+    name: string;
+    created: Date;
+    lastActive: Date;
+    city: string;
+    photoUrl: string;
+    introduction?: string;
+    lookingFor?: string;
+    interests?: string;
+    photos?: Array<PhotosDto>;
+}

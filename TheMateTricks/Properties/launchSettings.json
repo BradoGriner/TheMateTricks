@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "MateTricks": {
+    "TheMateTricks": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",

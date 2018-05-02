@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../Services/auth.service';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { Component, OnInit, Input } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
 
 @Component({
   selector: 'app-register',
@@ -9,32 +8,44 @@ import { ModalModule } from 'ngx-bootstrap/modal';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  //model = {}; Model for submission
-  model = { userName: '', password: '' };
-  //Declare the password confirmation model
-  PasswordConfirmation = { passwordConfirm: '' }
-  AcctSuccess = false;
-  constructor(public AuthService: AuthService) { }
+  model = { username: '', password: '' ,gender:'',name:'',birthdate:'',city:''};
+  passwordCon = { password: '' };
+  errors: string[] = [];
+  success = false;
+
+  passwordConAlert = {
+    type: 'danger',
+    msg: 'Passwords do not match!',
+    timeout: 10000
+  };
+  alert = {
+    type: 'danger',
+    timeout: 2000
+  };
+  err = null;
+  data = null;
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }
-  //Method used to verify the password
-  PassVerify() {
-    return this.model.password == this.PasswordConfirmation.passwordConfirm;
-   
+
+  checkPassword() {
+    return this.model.password == this.passwordCon.password;
   }
-  //Method used to check if an account was created
-  AccountCreation() {
-  return this.AcctSuccess;
-}
+
+  //getErrors(error) {
+  //  if (error.Password != null) {
+  //    this.errors.push(error.Password["0"]);
+  //  }
+  //  if (error.UserName != null) {
+  //    this.errors.push(error.UserName["0"]);
+  //  }
+  //}
   
+
   register() {
-    console.log(this.model);
-    if (this.PassVerify()) {
-      this.AcctSuccess = true;
-      if (this.AccountCreation()) {
-        this.AuthService.Register(this.model).subscribe(data => console.log(data), error => console.log(error));
-      }
+    if (this.checkPassword()) {
+        this.authService.Register(this.model).subscribe(data => this.success = true, error => console.log(error));
     }
   }
 }

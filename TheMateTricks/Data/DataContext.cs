@@ -7,18 +7,13 @@ using System.Threading.Tasks;
 
 namespace TheMateTricks.Data
 {
-    namespace MateTricks.Data
+    public class DataContext : DbContext
     {
-        public class DataContext : DbContext
-        {
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        { }
 
-            public DataContext(DbContextOptions<DataContext> options) : base(options)
-            { }
+        public DbSet<User> Users { get; set; }
 
-            public DbSet<User> Users { get; set; }
-
-            public DbSet<Photo> Photos { get; set; }
-
-        }
+        public DbSet<Photo> Photos { get; set; }
     }
 }

@@ -1,42 +1,42 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">The Web</a>
+  <button (click)="isCollapsed = !isCollapsed" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">The Matrix</a>
-    <button (click)="isCollapsed = !isCollapsed" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault" [collapse]="isCollapsed">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/Home">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/members">Members</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/friends">Friends List</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/messages">Messages</a>
-        </li>
-      </ul>
-      <form *ngIf="VerifyLogin()" #LoginForm="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit)="login()">
-        <input name="userName" class="form-control mr-sm-2" type="text" placeholder="UserName" [(ngModel)]="model.userName" required/>
-        <input name="password" class="form-control mr-sm-2" type="password" placeholder="Password" [(ngModel)]="model.password" required/>
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" [disabled]="!LoginForm.valid">Sign in</button>
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault" [collapse]="isCollapsed">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#">Matches <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/friends" href="#">Friend Lists</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/members" href="#">Members</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/messages">Messages</a>
+      </li>
+    </ul>
+    <div *ngIf="!alertPlaying; else alertPlayer">
+      <form *ngIf="!checkLogin()" #loginForm="ngForm" (ngSubmit)="login()" class="form-inline my-2 my-lg-0">
+        <input required class="form-control mr-sm-2" type="text" placeholder="UserName" aria-label="UserName" name="username" [(ngModel)]="model.userName">
+        <input required class="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Password" name="password" [(ngModel)]="model.password">
+        <button [disabled]="!loginForm.valid" class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign In</button>
       </form>
-      <div *ngIf="!VerifyLogin()" class="btn-group" dropdown>
+      <div *ngIf="checkLogin()" class="btn-group mr-3" dropdown>
         <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
-         Welcome User! <span class="caret"></span>
+          Welcome {{user}}
         </button>
         <ul *dropdownMenu class="dropdown-menu" role="menu">
-          <li role="menuitem"><a class="dropdown-item" href="#">Edit profile</a></li>
-          <li role="menuitem"><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
-          <li class="divider dropdown-divider"></li>
-          <li role="menuitem">
-            <a class="dropdown-item" href="#">Separated link</a>
-          </li>
+          <li role="menuitem"><a class="dropdown-item" href="#"><i class="fa fa-user mr-1"></i>Edit Profile</a></li>
+          <li role="menuitem"><a class="dropdown-item" routerLink="/home" (click)="logOut()"><i class="fa fa-sign-out mr-1"></i>Log Out</a></li>
         </ul>
       </div>
     </div>
-  </nav>
+  </div>
+  <ng-template #alertPlayer>
+    <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout" (onClosed)="closeAlert()">{{ alert.msg }}</alert>
+  </ng-template>
+</nav>
